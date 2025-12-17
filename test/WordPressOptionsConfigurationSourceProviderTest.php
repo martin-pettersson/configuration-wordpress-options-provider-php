@@ -11,7 +11,6 @@ declare(strict_types=1);
 
 namespace N7e;
 
-use N7e\DependencyInjection\ContainerBuilderInterface;
 use N7e\DependencyInjection\ContainerInterface;
 use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -23,7 +22,6 @@ use PHPUnit\Framework\TestCase;
 class WordPressOptionsConfigurationSourceProviderTest extends TestCase
 {
     private WordPressOptionsConfigurationSourceProvider $provider;
-    private MockObject $containerBuilderMock;
     private MockObject $containerMock;
     private MockObject $registryMock;
 
@@ -31,12 +29,9 @@ class WordPressOptionsConfigurationSourceProviderTest extends TestCase
     public function setUp(): void
     {
         $this->provider = new WordPressOptionsConfigurationSourceProvider();
-        $this->containerBuilderMock = $this->getMockBuilder(ContainerBuilderInterface::class)->getMock();
         $this->containerMock = $this->getMockBuilder(ContainerInterface::class)->getMock();
         $this->registryMock = $this->getMockBuilder(ConfigurationSourceProducerRegistryInterface::class)->getMock();
 
-        $this->containerBuilderMock->method('build')
-            ->willReturn($this->containerMock);
         $this->containerMock->method('get')
             ->with(ConfigurationSourceProducerRegistryInterface::class)
             ->willReturn($this->registryMock);
@@ -50,6 +45,6 @@ class WordPressOptionsConfigurationSourceProviderTest extends TestCase
             ->method('register')
             ->with($this->isInstanceOf(WordPressOptionsConfigurationSourceProducer::class));
 
-        $this->provider->configure($this->containerBuilderMock);
+        $this->provider->load($this->containerMock);
     }
 }

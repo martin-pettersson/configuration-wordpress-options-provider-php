@@ -20,23 +20,22 @@ use Override;
  */
 class WordPressOptionsConfigurationSourceProvider implements ServiceProviderInterface
 {
-    #[Override]
-    public function configure(ContainerBuilderInterface $containerBuilder): void
-    {
-        /** @var \N7e\ConfigurationSourceProducerRegistryInterface $configurationSourceProducers */
-        $configurationSourceProducers = $containerBuilder->build()
-            ->get(ConfigurationSourceProducerRegistryInterface::class);
-
-        $configurationSourceProducers->register(new WordPressOptionsConfigurationSourceProducer());
-    }
-
     /**
      * {@inheritDoc}
      *
      * @phpcsSuppress SlevomatCodingStandard.Functions.UnusedParameter
      */
     #[Override]
+    public function configure(ContainerBuilderInterface $containerBuilder): void
+    {
+    }
+
+    #[Override]
     public function load(ContainerInterface $container): void
     {
+        /** @var \N7e\ConfigurationSourceProducerRegistryInterface $configurationSourceProducers */
+        $configurationSourceProducers = $container->get(ConfigurationSourceProducerRegistryInterface::class);
+
+        $configurationSourceProducers->register(new WordPressOptionsConfigurationSourceProducer());
     }
 }
